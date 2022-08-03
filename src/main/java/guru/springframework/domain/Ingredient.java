@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 /**
  * Created by jt on 6/13/17.
@@ -41,4 +42,12 @@ public class Ingredient {
         this.recipe = recipe;
     }
 
+
+    //the lombok v
+    @Override
+    public String toString() {
+       DecimalFormat format = new  DecimalFormat("0.#");
+        return amount.setScale(2).stripTrailingZeros()  + " " + uom+ " " + description;
+
+    }
 }
