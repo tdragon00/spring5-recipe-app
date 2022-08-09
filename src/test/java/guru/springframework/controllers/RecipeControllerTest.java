@@ -1,5 +1,6 @@
 package guru.springframework.controllers;
 
+import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Recipe;
 import guru.springframework.services.RecipeService;
 import org.h2.command.dml.MergeUsing;
@@ -33,12 +34,15 @@ class RecipeControllerTest {
 
     RecipeController controller;
 
+    MockMvc     mockMvc;
+
 
     @BeforeEach
     void setUp() throws  Exception{
 
         controller = new RecipeController(recipeService);
         System.out.println("halp");
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
 
 
@@ -52,10 +56,32 @@ class RecipeControllerTest {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         when(recipeService.findById(anyLong())).thenReturn(recipe);
 
-        mockMvc.perform(get("/recipe/show/1"))
+        mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"))
                 .andExpect(model().attributeExists("recipe"));
     }
 
+    @Test
+    public void testGetNewRecipeForm() throws Exception {
+        RecipeCommand command = new RecipeCommand();
+
+        mockMvc.perform(get("/recipe/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/recipeform"))
+                .andExpect(model().attributeExists("recipe"));
+    }
+
+    @Test
+    public void testGetUpdateView() throws Exception {
+        RecipeCommand command = new RecipeCommand();
+        command.setId(2L);
+
+        when(recipeService.findCommandById(anyLong())).thenReturn(command);
+
+        mockMvc.perform(get("/recipe/1/update"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/recipeform"))
+                .andExpect(model().attributeExists("recipe"));
+    }
 }

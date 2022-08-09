@@ -5,6 +5,7 @@ import guru.springframework.commands.IngredientCommand;
 import guru.springframework.commands.NotesCommand;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Difficulty;
+import guru.springframework.domain.Notes;
 import guru.springframework.domain.Recipe;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +27,7 @@ public class RecipeCommandToRecipeTest {
     public static final Long INGRED_ID_1 = 3L;
     public static final Long INGRED_ID_2 = 4L;
     public static final Long NOTES_ID = 9L;
+
 
     RecipeCommandToRecipe converter;
 
@@ -61,8 +63,10 @@ public class RecipeCommandToRecipeTest {
         recipeCommand.setSource(SOURCE);
         recipeCommand.setUrl(URL);
 
+
         NotesCommand notes = new NotesCommand();
         notes.setId(NOTES_ID);
+
 
         recipeCommand.setNotes(notes);
 
